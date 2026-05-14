@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. R. Shivakumar – SRM Group of Institutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,168,76,0.18);
+    --navy: #0a1628;
+    --navy-mid: #0d1f3c;
+    --navy-glass: rgba(10,22,40,0.72);
+    --glass-white: rgba(255,255,255,0.06);
+    --glass-border: rgba(201,168,76,0.22);
+    --text-main: #f5f0e3;
+    --text-sub: rgba(245,240,227,0.75);
+    --blue-accent: #1a6fc4;
+    --blue-glow: rgba(26,111,196,0.35);
+    --teal: #0e7a7a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text-main);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── CANVAS BG ── */
+  #bg-canvas {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── GLOBAL WRAPPER ── */
+  .page { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 60px 24px 80px;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(26,111,196,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ── CARD FLIP CONTAINER ── */
+  .card-scene {
+    perspective: 1200px;
+    width: min(540px, 94vw);
+    height: auto;
+    margin-bottom: 48px;
+  }
+
+  .card-3d {
+    position: relative;
+    width: 100%;
+    transform-style: preserve-3d;
+    animation: floatCard 6s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.9s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .card-3d.flipped { transform: rotateY(180deg) translateY(-8px); }
+
+  @keyframes floatCard {
+    0%, 100% { transform: translateY(0px) rotateX(1deg); }
+    50% { transform: translateY(-14px) rotateX(-1deg); }
+  }
+  .card-3d.flipped {
+    animation: none;
+  }
+
+  .card-face {
+    width: 100%;
+    backface-visibility: hidden;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      0 8px 40px rgba(0,0,0,0.55),
+      0 0 0 1px rgba(201,168,76,0.08) inset,
+      0 0 80px rgba(26,111,196,0.12);
+  }
+
+  .card-front {
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 60%, rgba(26,111,196,0.07) 100%),
+      linear-gradient(160deg, #0d1f3c 0%, #091525 50%, #071320 100%);
+    backdrop-filter: blur(20px);
+    padding: 38px 36px 32px;
+  }
+
+  .card-back {
+    position: absolute; top: 0; left: 0; width: 100%;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 60%),
+      linear-gradient(160deg, #0a1e38 0%, #071525 100%);
+    backdrop-filter: blur(20px);
+    padding: 30px 32px;
+    transform: rotateY(180deg);
+    border-radius: 22px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+  }
+
+  /* shimmer sweep */
+  .card-front::after, .card-back::after {
+    content: '';
+    position: absolute;
+    top: -60%; left: -60%;
+    width: 50%; height: 220%;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%);
+    transform: skewX(-20deg);
+    animation: shimmer 7s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes shimmer {
+    0%,100%{left:-60%} 50%{left:160%}
+  }
+
+  .card-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .name-block h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    color: var(--gold-light);
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+    text-shadow: 0 0 30px rgba(201,168,76,0.3);
+    margin-bottom: 10px;
+  }
+  .name-block .cred {
+    font-size: 0.9rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .name-block .title {
+    font-size: 1.05rem;
+    color: var(--text-main);
+    margin-top: 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+  }
+
+  .logo-box {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    flex-shrink: 0; margin-left: 16px;
+  }
+  .logo-box img {
+    width: 74px; height: auto;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 12px rgba(26,111,196,0.5));
+  }
+  .logo-box .brand {
+    font-size: 0.6rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    max-width: 80px;
+    line-height: 1.4;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+    margin: 18px 0;
+    opacity: 0.35;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+    margin-bottom: 20px;
+  }
+
+  .contact-item {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .contact-item .label {
+    font-size: 0.7rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+  .contact-item .value {
+    font-size: 0.9rem;
+    color: var(--text-main);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  .contact-item .value a {
+    color: inherit; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-item .value a:hover { color: var(--gold-light); }
+
+  .address-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+  }
+  .address-block .label {
+    font-size: 0.7rem; color: var(--gold); text-transform: uppercase;
+    letter-spacing: 0.14em; margin-bottom: 6px; font-weight: 500;
+  }
+  .address-block p {
+    font-size: 0.88rem; color: var(--text-sub); line-height: 1.6;
+  }
+
+  .action-row {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+
+  .action-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 11px 18px;
+    border-radius: 50px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.05);
+    color: var(--text-main);
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(8px);
+    flex: 1; min-width: 100px;
+    justify-content: center;
+  }
+  .action-btn:hover {
+    background: var(--gold-dim);
+    border-color: var(--gold);
+    color: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201,168,76,0.2);
+  }
+  .action-btn svg { width: 16px; height: 16px; }
+
+  .flip-hint {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-sub);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 12px;
+    opacity: 0.6;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+
+  /* BACK */
+  .back-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    color: var(--gold-light);
+    font-weight: 600;
+    margin-bottom: 18px;
+    letter-spacing: 0.05em;
+  }
+  .campus-section { margin-bottom: 22px; }
+  .campus-section h3 {
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+  .inst-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .inst-list li {
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    display: flex; align-items: flex-start; gap: 8px;
+    line-height: 1.55;
+  }
+  .inst-list li::before {
+    content: '›';
+    color: var(--gold);
+    font-size: 1rem;
+    line-height: 1.35;
+    flex-shrink: 0;
+  }
+  .sub-inst { padding-left: 18px; }
+  .sub-inst::before { content: '·' !important; color: var(--blue-accent) !important; }
+
+  /* ── HERO BOTTOM ── */
+  .hero-tagline {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .hero-tagline h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: 0.02em;
+  }
+  .hero-tagline p {
+    font-size: 0.92rem;
+    color: var(--text-sub);
+    margin-top: 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── SECTION ── */
+  section.institutions {
+    padding: 80px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 52px;
+  }
+  .section-header .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .section-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.2;
+  }
+  .section-header .subtitle {
+    font-size: 1rem;
+    color: var(--text-sub);
+    margin-top: 14px;
+    max-width: 540px;
+    margin-inline: auto;
+    line-height: 1.7;
+  }
+
+  .campus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .campus-card {
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 28px;
+    backdrop-filter: blur(12px);
+    position: relative; overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .campus-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 50px rgba(0,0,0,0.45), 0 0 40px rgba(201,168,76,0.1);
+    border-color: rgba(201,168,76,0.45);
+  }
+  .campus-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+  .campus-card:hover::before { opacity: 1; }
+
+  .campus-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 50px;
+    padding: 4px 12px;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 16px;
+  }
+
+  .campus-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 16px;
+    line-height: 1.35;
+  }
+
+  .dept-chips {
+    display: flex; flex-wrap: wrap; gap: 7px;
+  }
+  .chip {
+    background: rgba(26,111,196,0.12);
+    border: 1px solid rgba(26,111,196,0.25);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 0.78rem;
+    color: #a8d4ff;
+    transition: background 0.2s;
+    font-weight: 400;
+  }
+  .chip:hover { background: rgba(26,111,196,0.25); }
+  .chip.medical {
+    background: rgba(14,122,122,0.15);
+    border-color: rgba(14,122,122,0.3);
+    color: #7de8e8;
+  }
+  .chip.general {
+    background: rgba(201,168,76,0.1);
+    border-color: rgba(201,168,76,0.22);
+    color: var(--gold);
+  }
+
+  /* ── CONTACT SECTION ── */
+  .contact-section {
+    padding: 80px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .contact-glass {
+    background: linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 52px 40px;
+    backdrop-filter: blur(16px);
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 80%, rgba(26,111,196,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .contact-glass h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    color: var(--gold-light);
+    margin-bottom: 10px;
+  }
+  .contact-glass .sub {
+    font-size: 0.95rem;
+    color: var(--text-sub);
+    margin-bottom: 36px;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+  }
+
+  .cta-buttons {
+    display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+    position: relative; z-index: 1;
+  }
+  .cta-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 15px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    letter-spacing: 0.02em;
+  }
+  .cta-btn.primary {
+    background: linear-gradient(135deg, var(--gold) 0%, #b8863c 100%);
+    color: #0a1628;
+    border: 1px solid transparent;
+  }
+  .cta-btn.primary:hover {
+    box-shadow: 0 8px 30px rgba(201,168,76,0.4);
+    transform: translateY(-3px);
+  }
+  .cta-btn.secondary {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(8px);
+  }
+  .cta-btn.secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+  }
+  .cta-btn svg { width: 18px; height: 18px; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 36px 24px;
+    font-size: 0.8rem;
+    color: rgba(245,240,227,0.4);
+    letter-spacing: 0.08em;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    line-height: 1.6;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── ENTRANCE ── */
+  .card-scene { animation: heroIn 1s cubic-bezier(0.16,1,0.3,1) both; animation-delay: 0.3s; }
+  @keyframes heroIn {
+    from { opacity: 0; transform: scale(0.88) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .hero-tagline { animation: heroIn 1s cubic-bezier(0.16,1,0.3,1) both; animation-delay: 0.55s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .card-front { padding: 26px 22px 24px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .logo-box img { width: 52px; }
+    .contact-glass { padding: 36px 24px; }
+    .campus-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ─── GLOW ORBS ─── */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+  }
+  .orb-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, #1a6fc4 0%, transparent 70%);
+    top: -200px; right: -200px;
+    animation: orbMove1 18s ease-in-out infinite alternate;
+  }
+  .orb-2 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, #c9a84c 0%, transparent 70%);
+    bottom: 10%; left: -150px;
+    animation: orbMove2 22s ease-in-out infinite alternate;
+  }
+  @keyframes orbMove1 { 0%{transform:translate(0,0)} 100%{transform:translate(-80px,100px)} }
+  @keyframes orbMove2 { 0%{transform:translate(0,0)} 100%{transform:translate(60px,-80px)} }
+
+  /* ─── AUTHENTICATION MODAL ─── */
+  #auth-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(10,22,40,0.95), rgba(13,31,60,0.95));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  #auth-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .auth-modal {
+    background: linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 24px;
+    padding: 52px 44px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.6), 0 0 60px rgba(26,111,196,0.15);
+    animation: modalIn 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.92) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .auth-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    background: rgba(26,111,196,0.3);
+    border: 1px solid rgba(26,111,196,0.4);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    color: var(--gold-light);
+    font-weight: 700;
+    box-shadow: 0 8px 32px rgba(26,111,196,0.25);
+  }
+
+  .auth-modal h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    color: var(--gold-light);
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .auth-modal p {
+    color: var(--text-sub);
+    font-size: 1rem;
+    margin-bottom: 30px;
+    line-height: 1.7;
+  }
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .auth-input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: var(--text-main);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    letter-spacing: 0.02em;
+  }
+
+  .auth-input::placeholder {
+    color: rgba(240,234,219,0.4);
+  }
+
+  .auth-input:focus {
+    outline: none;
+    background: rgba(255,255,255,0.08);
+    border-color: var(--gold-light);
+    box-shadow: 0 0 20px rgba(201,168,76,0.25);
+  }
+
+  .auth-btn {
+    background: linear-gradient(135deg, var(--gold) 0%, #b8863c 100%);
+    color: #0a1628;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 24px rgba(201,168,76,0.3);
+  }
+
+  .auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(201,168,76,0.4);
+  }
+
+  .auth-btn:active {
+    transform: translateY(0);
+  }
+
+  .auth-error {
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    margin-top: -8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .auth-error.show {
+    opacity: 1;
+  }
+
+  .preview-badge {
+    display: inline-block;
+    background: rgba(14,122,122,0.25);
+    border: 1px solid rgba(14,122,122,0.4);
+    color: #7de8e8;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  /* ─── PREVIEW MODE STYLES ─── */
+  .card-preview {
+    opacity: 0.6;
+    filter: blur(2px);
+    pointer-events: none;
+  }
+
+  .contact-item.hidden-preview,
+  .address-block.hidden-preview,
+  .action-row.hidden-preview {
+    position: relative;
+    opacity: 0.4;
+  }
+
+  .contact-item.hidden-preview::after,
+  .address-block.hidden-preview::after,
+  .action-row.hidden-preview::after {
+    content: 'Locked';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    color: rgba(240,234,219,0.5);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    backdrop-filter: blur(2px);
+  }
+
+  #preview-badge {
+    margin-bottom: 12px;
+  }
+
+  .preview-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(14,122,122,0.25), rgba(14,122,122,0.15));
+    border: 1px solid rgba(14,122,122,0.4);
+    color: #7de8e8;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    box-shadow: 0 2px 12px rgba(125,232,232,0.15);
+  }
+
+  /* ─── ENHANCED 3D FLIP ANIMATION ─── */
+  .card-3d {
+    will-change: transform;
+    transform-style: preserve-3d;
+  }
+
+  .card-3d.flipped {
+    animation: none !important;
+    transform: rotateY(180deg) !important;
+  }
+
+  .card-face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .card-front {
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .card-scene {
+      perspective: 800px;
+    }
+    
+    .card-3d {
+      transition: transform 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+    
+    .auth-modal {
+      padding: 40px 28px;
+    }
+    
+    .auth-btn {
+      padding: 12px 24px;
+      font-size: 0.9rem;
+    }
+    
+    .auth-input {
+      padding: 12px 16px;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .auth-modal {
+      padding: 32px 20px;
+      max-width: 95%;
+    }
+    
+    .auth-modal h2 {
+      font-size: 1.6rem;
+    }
+    
+    .auth-logo {
+      width: 64px;
+      height: 64px;
+      font-size: 2rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- ── AUTHENTICATION OVERLAY ── -->
+<div id="auth-overlay">
+  <div class="auth-modal">
+    <div class="auth-logo">🔐</div>
+    <h2>Digital Visiting Card</h2>
+    <p>Enter the access code to view the complete premium digital visiting card with all contact details and credentials.</p>
+    <form class="auth-form" id="auth-form" onsubmit="handleAuth(event)">
+      <div>
+        <input type="password" class="auth-input" id="auth-code" placeholder="Enter access code" autocomplete="off">
+        <span class="auth-error" id="auth-error"></span>
+      </div>
+      <button type="submit" class="auth-btn">Unlock</button>
+    </form>
+    <p style="font-size: 0.8rem; color: var(--text-sub); margin-top: 20px; opacity: 0.7;">
+      💡 <strong>Hint:</strong> You can still view a limited preview without authentication.
+    </p>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-tagline">
+      <h2>SRM Group of Institutions</h2>
+      <p>Tiruchirappalli · Est. Excellence in Education</p>
+    </div>
+
+    <br>
+
+    <div class="card-scene">
+      <div class="card-3d">
+
+        <!-- FRONT -->
+        <div class="card-face card-front">
+          <div id="preview-badge"></div>
+          
+          <div class="card-header">
+            <div class="name-block">
+              <div class="cred">M.D.</div>
+              <h1>Dr. R. Shivakumar</h1>
+              <div class="title">Chairman – SRM Group of Institutions</div>
+            </div>
+            <div class="logo-box">
+              <img src="public/images/srm_logo.jpeg" 
+                   alt="SRM Logo"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+              <div style="display:none; font-family:'Cormorant Garamond',serif; font-size:1.8rem; color:var(--gold-light); font-weight:700; text-align:center; line-height:1;">SRM</div>
+              <div class="brand">Group of Institutions</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- SRM Branding Section -->
+          <div style="text-align: center; margin-bottom: 20px; padding: 12px; background: rgba(26,111,196,0.08); border-radius: 12px; border: 1px solid rgba(26,111,196,0.15);">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 4px;">
+              <div style="width: 32px; height: 32px; background: rgba(201,168,76,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🏛️</div>
+              <div style="text-align: left;">
+                <div style="font-size: 0.65rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600;">SRM Group</div>
+                <div style="font-size: 0.85rem; color: var(--text-main); font-weight: 500;">Tiruchirappalli</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-grid" id="contact-grid">
+            <div class="contact-item">
+              <div class="label">Chennai Ramapuram</div>
+              <div class="value"><a href="tel:+914443923098">+91-44-4392 3098</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="label">Tiruchirappalli</div>
+              <div class="value"><a href="tel:+914312258608">+91-431-2258608</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="label">Mobile / WhatsApp</div>
+              <div class="value"><a href="tel:+919444056213">+91 94440 56213</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="label">LinkedIn</div>
+              <div class="value"><a href="https://linkedin.com/in/dr-shivakumar-r" target="_blank">@dr-shivakumar-r</a></div>
+            </div>
+          </div>
+
+          <div class="address-block" id="address-block">
+            <div class="label">Head Office</div>
+            <p>Bharathi Salai, Ramapuram, Chennai – 600 089</p>
+          </div>
+
+          <div class="action-row" id="action-row">
+            <a class="action-btn" href="mailto:chairman@srmorg.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+              </svg>
+              Email
+            </a>
+            <a class="action-btn" href="tel:+919444056213">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.07 1.18 2 2 0 012.03 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+              </svg>
+              Call
+            </a>
+            <a class="action-btn" href="https://srmorg.com" target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+              </svg>
+              Website
+            </a>
+          </div>
+        </div>
+
+        <!-- BACK -->
+        <div class="card-face card-back">
+          <div class="back-title">Our Institutions</div>
+
+          <div class="campus-section">
+            <h3>Chennai Ramapuram</h3>
+            <ul class="inst-list">
+              <li>SRM Institute of Science &amp; Technology</li>
+              <li class="sub-inst">Engineering &amp; Technology</li>
+              <li class="sub-inst">Science &amp; Humanities</li>
+              <li class="sub-inst">Media Studies</li>
+              <li class="sub-inst">Management Studies</li>
+              <li>SRM Dental College and Hospital</li>
+              <li>Easwari Engineering College</li>
+              <li>SRM School of Environment Architecture &amp; Design (SEAD)</li>
+              <li>SRM Prime Hospital &nbsp;·&nbsp; SRM Hospital, West Mambalam</li>
+              <li>SRM Nightingale Matriculation H.S. School</li>
+            </ul>
+          </div>
+
+          <div class="campus-section">
+            <h3>Tiruchirappalli</h3>
+            <ul class="inst-list">
+              <li>Trichy SRM Medical College Hospital &amp; Research Centre</li>
+              <li>TSRM Allied Health Science Courses</li>
+              <li>SRM TRP Engineering College</li>
+              <li>SRM Trichy College of Nursing</li>
+              <li>SRM Trichy Arts &amp; Science College</li>
+              <li>SRM Institute of Allied Health Sciences</li>
+              <li>SRM Institute of Hotel Management</li>
+              <li>SRM Institute of Science &amp; Technology (Trichy)</li>
+              <li class="sub-inst">Engineering &amp; Technology · Science &amp; Humanities</li>
+              <li class="sub-inst">Physiotherapy · Occupational Therapy</li>
+            </ul>
+          </div>
+        </div>
+
+      </div><!-- card-3d -->
+    </div><!-- card-scene -->
+
+    <div class="flip-hint">↔ Tap card to flip</div>
+  </div>
+
+  <!-- ── INSTITUTIONS ── -->
+  <section class="institutions">
+    <div class="section-header reveal">
+      <div class="eyebrow">Our Campus Network</div>
+      <h2>Institutions of Excellence</h2>
+      <p class="subtitle">A legacy of academic and healthcare excellence spanning two major cities across Tamil Nadu.</p>
+    </div>
+
+    <div class="campus-grid">
+
+      <!-- Chennai Engineering & Academics -->
+      <div class="campus-card reveal reveal-delay-1">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          Chennai Ramapuram
+        </div>
+        <div class="campus-name">SRM Institute of Science &amp; Technology</div>
+        <div class="dept-chips">
+          <span class="chip">Engineering &amp; Technology</span>
+          <span class="chip">Science &amp; Humanities</span>
+          <span class="chip">Media Studies</span>
+          <span class="chip">Management Studies</span>
+        </div>
+      </div>
+
+      <!-- Easwari -->
+      <div class="campus-card reveal reveal-delay-2">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          Chennai Ramapuram
+        </div>
+        <div class="campus-name">Easwari Engineering College</div>
+        <div class="dept-chips">
+          <span class="chip">Engineering Programs</span>
+          <span class="chip general">Autonomous Institution</span>
+        </div>
+      </div>
+
+      <!-- SEAD -->
+      <div class="campus-card reveal reveal-delay-3">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          Chennai Ramapuram
+        </div>
+        <div class="campus-name">SRM School of Environment Architecture &amp; Design</div>
+        <div class="dept-chips">
+          <span class="chip">Architecture</span>
+          <span class="chip">Environmental Design</span>
+          <span class="chip general">SEAD</span>
+        </div>
+      </div>
+
+      <!-- SRM Dental -->
+      <div class="campus-card reveal reveal-delay-1">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Medical · Chennai
+        </div>
+        <div class="campus-name">SRM Dental College &amp; Hospital</div>
+        <div class="dept-chips">
+          <span class="chip medical">Dental Sciences</span>
+          <span class="chip medical">Oral Surgery</span>
+          <span class="chip medical">Orthodontics</span>
+        </div>
+      </div>
+
+      <!-- Hospitals Chennai -->
+      <div class="campus-card reveal reveal-delay-2">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Healthcare · Chennai
+        </div>
+        <div class="campus-name">SRM Prime Hospital &amp; SRM Hospital West Mambalam</div>
+        <div class="dept-chips">
+          <span class="chip medical">Multi-Speciality</span>
+          <span class="chip medical">Critical Care</span>
+          <span class="chip medical">Diagnostics</span>
+        </div>
+      </div>
+
+      <!-- Nightingale -->
+      <div class="campus-card reveal reveal-delay-3">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+          School · Chennai
+        </div>
+        <div class="campus-name">SRM Nightingale Matriculation Higher Secondary School</div>
+        <div class="dept-chips">
+          <span class="chip general">Matriculation</span>
+          <span class="chip general">K–12 Excellence</span>
+        </div>
+      </div>
+
+      <!-- Trichy Medical -->
+      <div class="campus-card reveal reveal-delay-1">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Medical · Trichy
+        </div>
+        <div class="campus-name">Trichy SRM Medical College Hospital &amp; Research Centre</div>
+        <div class="dept-chips">
+          <span class="chip medical">MBBS</span>
+          <span class="chip medical">Allied Health Sciences</span>
+          <span class="chip medical">Research</span>
+        </div>
+      </div>
+
+      <!-- SRM TRP Engineering -->
+      <div class="campus-card reveal reveal-delay-2">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          Engineering · Trichy
+        </div>
+        <div class="campus-name">SRM TRP Engineering College</div>
+        <div class="dept-chips">
+          <span class="chip">B.E / B.Tech</span>
+          <span class="chip">Postgraduate</span>
+          <span class="chip general">Anna University Affiliated</span>
+        </div>
+      </div>
+
+      <!-- Trichy ISST -->
+      <div class="campus-card reveal reveal-delay-3">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          University · Trichy
+        </div>
+        <div class="campus-name">SRM Institute of Science &amp; Technology – Trichy Campus</div>
+        <div class="dept-chips">
+          <span class="chip">Engineering &amp; Technology</span>
+          <span class="chip">Science &amp; Humanities</span>
+          <span class="chip medical">Physiotherapy</span>
+          <span class="chip medical">Occupational Therapy</span>
+        </div>
+      </div>
+
+      <!-- Nursing & Arts -->
+      <div class="campus-card reveal reveal-delay-1">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+          Allied Health · Trichy
+        </div>
+        <div class="campus-name">SRM Trichy College of Nursing &amp; Arts &amp; Science</div>
+        <div class="dept-chips">
+          <span class="chip medical">Nursing (B.Sc / M.Sc)</span>
+          <span class="chip">Arts &amp; Science</span>
+          <span class="chip general">Allied Health</span>
+        </div>
+      </div>
+
+      <!-- Hotel Mgmt & Allied -->
+      <div class="campus-card reveal reveal-delay-2">
+        <div class="campus-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-4 0v2"/></svg>
+          Management · Trichy
+        </div>
+        <div class="campus-name">SRM Institute of Hotel Management &amp; Allied Health Sciences</div>
+        <div class="dept-chips">
+          <span class="chip general">Hotel Management</span>
+          <span class="chip medical">Allied Health Sciences</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <div class="contact-section reveal">
+    <div class="contact-glass">
+      <h2>Connect with the Chairman</h2>
+      <p class="sub">Dr. R. Shivakumar, M.D. &nbsp;·&nbsp; SRM Group of Institutions</p>
+      <div class="cta-buttons">
+        <a class="cta-btn primary" href="tel:+919444056213">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.07 1.18 2 2 0 012.03 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          Call Now
+        </a>
+        <a class="cta-btn secondary" href="mailto:chairman@srmorg.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+          </svg>
+          Send Email
+        </a>
+        <a class="cta-btn secondary" href="https://srmorg.com" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+          </svg>
+          Visit Website
+        </a>
+        <a class="cta-btn secondary" href="https://linkedin.com/in/dr-shivakumar-r" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 SRM Group of Institutions &nbsp;·&nbsp; All rights reserved &nbsp;·&nbsp; <a href="https://srmorg.com" style="color:var(--gold);text-decoration:none;">srmorg.com</a>
+  </footer>
+
+</div><!-- page -->
+
+<script>
+// ── AUTHENTICATION ──
+let isAuthenticated = false;
+
+function handleAuth(event) {
+  event.preventDefault();
+  const authCode = document.getElementById('auth-code').value;
+  const authError = document.getElementById('auth-error');
+  
+  authError.classList.remove('show');
+  
+  if (authCode === 'VCshivakumar') {
+    isAuthenticated = true;
+    authError.textContent = '';
+    
+    // Smooth transition to authenticated view
+    document.getElementById('auth-overlay').style.animation = 'fadeOut 0.6s cubic-bezier(0.4,0,0.2,1) forwards';
+    
+    setTimeout(() => {
+      document.getElementById('auth-overlay').classList.add('hidden');
+      updateCardVisibility();
+    }, 600);
+  } else {
+    authError.textContent = 'Incorrect access code. Please try again.';
+    authError.classList.add('show');
+    document.getElementById('auth-code').value = '';
+    document.getElementById('auth-code').focus();
+  }
+}
+
+function updateCardVisibility() {
+  const contactGrid = document.getElementById('contact-grid');
+  const addressBlock = document.getElementById('address-block');
+  const actionRow = document.getElementById('action-row');
+  const previewBadge = document.getElementById('preview-badge');
+  
+  if (isAuthenticated) {
+    contactGrid.classList.remove('hidden-preview');
+    addressBlock.classList.remove('hidden-preview');
+    actionRow.classList.remove('hidden-preview');
+    previewBadge.innerHTML = '';
+  } else {
+    contactGrid.classList.add('hidden-preview');
+    addressBlock.classList.add('hidden-preview');
+    actionRow.classList.add('hidden-preview');
+    previewBadge.innerHTML = '<div class="preview-badge">🔒 Limited Preview</div>';
+  }
+}
+
+// Add fade out animation
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
+
+// Initialize preview mode
+updateCardVisibility();
+
+// ── PARTICLE CANVAS ──
+(function(){
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  class Particle {
+    constructor(){
+      this.reset();
+    }
+    reset(){
+      this.x = Math.random() * W;
+      this.y = Math.random() * H;
+      this.r = Math.random() * 1.5 + 0.3;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.alpha = Math.random() * 0.4 + 0.05;
+      this.color = Math.random() > 0.5 ? '201,168,76' : '26,111,196';
+    }
+    update(){
+      this.x += this.vx;
+      this.y += this.vy;
+      if(this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+    }
+    draw(){
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
+      ctx.fill();
+    }
+  }
+
+  function init(){
+    particles = Array.from({length: 120}, () => new Particle());
+  }
+
+  function loop(){
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    // draw connecting lines
+    for(let i = 0; i < particles.length; i++){
+      for(let j = i+1; j < particles.length; j++){
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < 90){
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(201,168,76,${0.06 * (1 - dist/90)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('resize', () => { resize(); init(); });
+  resize(); init(); loop();
+})();
+
+// ── SCROLL REVEAL ──
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+revealEls.forEach(el => io.observe(el));
+
+// ── ENHANCED MOUSE PARALLAX on card with smooth tracking ──
+const cardScene = document.querySelector('.card-scene');
+const card3d = document.querySelector('.card-3d');
+let mouseX = 0, mouseY = 0;
+let targetRotX = 0, targetRotY = 0;
+
+document.addEventListener('mousemove', e => {
+  if(card3d.classList.contains('flipped')) return;
+  
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  
+  targetRotX = ((e.clientY - cy) / cy) * 6;
+  targetRotY = ((e.clientX - cx) / cx) * -6;
+  
+  // Smooth easing for rotation
+  const easeX = targetRotX * 0.15;
+  const easeY = targetRotY * 0.15;
+  
+  card3d.style.transform = 
+    `translateY(-6px) rotateX(${easeX}deg) rotateY(${easeY}deg)`;
+});
+
+document.addEventListener('mouseleave', () => {
+  if(!card3d.classList.contains('flipped')) {
+    card3d.style.transform = '';
+  }
+});
+
+// ── ENHANCED FLIP WITH SMOOTH ANIMATION ──
+const flipHint = document.querySelector('.flip-hint');
+cardScene.addEventListener('click', function() {
+  // Clear any inline transform from parallax before toggling
+  card3d.style.transform = '';
+  
+  const isFlipped = card3d.classList.toggle('flipped');
+  
+  // Add click feedback
+  cardScene.style.transform = isFlipped ? 'scale(0.98)' : 'scale(1)';
+  setTimeout(() => {
+    cardScene.style.transform = '';
+  }, 200);
+  
+  // Update hint text
+  if (isFlipped) {
+    flipHint.textContent = '↔ Tap card to flip back';
+  } else {
+    flipHint.textContent = '↔ Tap card to flip';
+  }
+});
+
+// Add touch support for mobile devices
+let touchStartX = 0;
+cardScene.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+});
+
+cardScene.addEventListener('touchend', e => {
+  const touchEndX = e.changedTouches[0].clientX;
+  const diff = touchEndX - touchStartX;
+  
+  // Require at least 50px swipe to trigger flip
+  if (Math.abs(diff) > 50) {
+    card3d.click?.() || cardScene.click();
+  }
+});
+
+// ── KEYBOARD NAVIGATION ──
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' || e.code === 'Enter') {
+    const authOverlay = document.getElementById('auth-overlay');
+    if (!authOverlay.classList.contains('hidden')) {
+      e.preventDefault();
+      document.getElementById('auth-code').focus();
+    }
+  }
+});
+
+// Auto-focus auth input on load
+window.addEventListener('load', () => {
+  const authCode = document.getElementById('auth-code');
+  if (authCode && !isAuthenticated) {
+    authCode.focus();
+  }
+});
+</script>
+</body>
+</html>
