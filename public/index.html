@@ -179,7 +179,7 @@
     flex-shrink: 0; margin-left: 16px;
   }
   .logo-box img {
-    width: 74px; height: auto;
+    width: 90px; height: auto;
     border-radius: 10px;
     filter: drop-shadow(0 0 12px rgba(26,111,196,0.5));
   }
@@ -189,7 +189,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-align: center;
-    max-width: 80px;
+    max-width: 90px;
     line-height: 1.4;
   }
 
@@ -562,14 +562,7 @@
   }
   .hero-tagline { animation: heroIn 1s cubic-bezier(0.16,1,0.3,1) both; animation-delay: 0.55s; }
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .card-front { padding: 26px 22px 24px; }
-    .contact-grid { grid-template-columns: 1fr; }
-    .logo-box img { width: 52px; }
-    .contact-glass { padding: 36px 24px; }
-    .campus-grid { grid-template-columns: 1fr; }
-  }
+
 
   /* ─── GLOW ORBS ─── */
   .orb {
@@ -819,46 +812,70 @@
     -webkit-transform: rotateY(180deg);
   }
 
-  /* Mobile optimizations */
-  @media (max-width: 768px) {
-    .card-scene {
-      perspective: 800px;
-    }
-    
-    .card-3d {
-      transition: transform 0.8s cubic-bezier(0.4,0,0.2,1);
-    }
-    
-    .auth-modal {
-      padding: 40px 28px;
-    }
-    
-    .auth-btn {
-      padding: 12px 24px;
-      font-size: 0.9rem;
-    }
-    
-    .auth-input {
-      padding: 12px 16px;
-      font-size: 0.9rem;
-    }
+  /* ── COMPREHENSIVE RESPONSIVE DESIGN ── */
+
+  /* Large Desktop / Mac Monitors (min-width: 1440px) */
+  @media (min-width: 1440px) {
+    .institutions { max-width: 1200px; }
+    .campus-card:hover { transform: translateY(-8px); }
+    .contact-glass { max-width: 1000px; margin: 0 auto; }
   }
 
+  /* Laptops / MacBooks (max-width: 1280px) */
+  @media (max-width: 1280px) {
+    .institutions { max-width: 95%; }
+  }
+
+  /* Small Laptops / Landscape Tablets (max-width: 1024px) */
+  @media (max-width: 1024px) {
+    .institutions { padding: 60px 20px; }
+    .contact-section { padding: 60px 20px; }
+    .campus-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  }
+
+  /* Tablets (Portrait & Landscape, max-width: 768px) */
+  @media (max-width: 768px) {
+    .card-scene { perspective: 800px; width: min(500px, 92vw); }
+    .card-3d { transition: transform 0.8s cubic-bezier(0.4,0,0.2,1); }
+    .auth-modal { padding: 40px 28px; }
+    .auth-btn { padding: 12px 24px; font-size: 0.9rem; }
+    .auth-input { padding: 12px 16px; font-size: 0.9rem; }
+    .campus-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  }
+
+  /* Large Mobiles / Phablets (max-width: 600px) */
+  @media (max-width: 600px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .campus-grid { grid-template-columns: 1fr; }
+    .logo-box img { width: 75px; }
+    .contact-glass { padding: 36px 24px; }
+    .section-header h2 { font-size: 2.2rem; }
+  }
+
+  /* Mobile Devices (Smartphones < 480px) */
   @media (max-width: 480px) {
-    .auth-modal {
-      padding: 32px 20px;
-      max-width: 95%;
-    }
-    
-    .auth-modal h2 {
-      font-size: 1.6rem;
-    }
-    
-    .auth-logo {
-      width: 64px;
-      height: 64px;
-      font-size: 2rem;
-    }
+    .card-scene { width: 95vw; }
+    .auth-modal { padding: 32px 20px; max-width: 95%; }
+    .auth-modal h2 { font-size: 1.6rem; }
+    .auth-logo { width: 64px; height: 64px; font-size: 2rem; }
+    .card-front { padding: 24px 20px 20px; }
+    .logo-box img { width: 65px; }
+    .cta-buttons { flex-direction: column; }
+    .cta-btn { width: 100%; justify-content: center; }
+  }
+
+  /* Extra Small Devices (Phones < 380px) */
+  @media (max-width: 379px) {
+    .name-block h1 { font-size: 1.5rem; }
+    .card-front { padding: 20px 16px 18px; }
+    .card-back { padding: 20px 16px; }
+    .logo-box img { width: 55px; }
+    .contact-glass { padding: 24px 16px; }
+    .cta-btn { padding: 12px 20px; font-size: 0.85rem; }
+    .action-row { flex-direction: column; }
+    .action-btn { width: 100%; }
+    .auth-modal { padding: 24px 16px; }
+    .auth-modal h2 { font-size: 1.4rem; }
   }
 </style>
 </head>
@@ -912,11 +929,13 @@
               <div class="title">Chairman – SRM Group of Institutions</div>
             </div>
             <div class="logo-box">
-              <img src="public/images/srm_logo.jpeg" 
+              <img src="images/srm_logo.jpeg" 
                    alt="SRM Logo"
                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-              <div style="display:none; font-family:'Cormorant Garamond',serif; font-size:1.8rem; color:var(--gold-light); font-weight:700; text-align:center; line-height:1;">SRM</div>
-              <div class="brand">Group of Institutions</div>
+              <div style="display:none; text-align:center;">
+                <div style="font-family:'Cormorant Garamond',serif; font-size:1.8rem; color:var(--gold-light); font-weight:700; line-height:1;">SRM</div>
+                <div class="brand">Group of Institutions</div>
+              </div>
             </div>
           </div>
 
