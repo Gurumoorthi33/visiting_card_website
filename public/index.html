@@ -885,24 +885,7 @@
 <div class="orb orb-2"></div>
 <canvas id="bg-canvas"></canvas>
 
-<!-- ── AUTHENTICATION OVERLAY ── -->
-<div id="auth-overlay">
-  <div class="auth-modal">
-    <div class="auth-logo">🔐</div>
-    <h2>Digital Visiting Card</h2>
-    <p>Enter the access code to view the complete premium digital visiting card with all contact details and credentials.</p>
-    <form class="auth-form" id="auth-form" onsubmit="handleAuth(event)">
-      <div>
-        <input type="password" class="auth-input" id="auth-code" placeholder="Enter access code" autocomplete="off">
-        <span class="auth-error" id="auth-error"></span>
-      </div>
-      <button type="submit" class="auth-btn">Unlock</button>
-    </form>
-    <p style="font-size: 0.8rem; color: var(--text-sub); margin-top: 20px; opacity: 0.7;">
-      💡 <strong>Hint:</strong> You can still view a limited preview without authentication.
-    </p>
-  </div>
-</div>
+
 
 <div class="page">
 
@@ -920,7 +903,6 @@
 
         <!-- FRONT -->
         <div class="card-face card-front">
-          <div id="preview-badge"></div>
           
           <div class="card-header">
             <div class="name-block">
@@ -936,6 +918,7 @@
                 <div style="font-family:'Cormorant Garamond',serif; font-size:1.8rem; color:var(--gold-light); font-weight:700; line-height:1;">SRM</div>
                 <div class="brand">Group of Institutions</div>
               </div>
+              <div class="brand">SRM group of institution</div>
             </div>
           </div>
 
@@ -1251,66 +1234,7 @@
 </div><!-- page -->
 
 <script>
-// ── AUTHENTICATION ──
-let isAuthenticated = false;
 
-function handleAuth(event) {
-  event.preventDefault();
-  const authCode = document.getElementById('auth-code').value;
-  const authError = document.getElementById('auth-error');
-  
-  authError.classList.remove('show');
-  
-  if (authCode === 'VCshivakumar') {
-    isAuthenticated = true;
-    authError.textContent = '';
-    
-    // Smooth transition to authenticated view
-    document.getElementById('auth-overlay').style.animation = 'fadeOut 0.6s cubic-bezier(0.4,0,0.2,1) forwards';
-    
-    setTimeout(() => {
-      document.getElementById('auth-overlay').classList.add('hidden');
-      updateCardVisibility();
-    }, 600);
-  } else {
-    authError.textContent = 'Incorrect access code. Please try again.';
-    authError.classList.add('show');
-    document.getElementById('auth-code').value = '';
-    document.getElementById('auth-code').focus();
-  }
-}
-
-function updateCardVisibility() {
-  const contactGrid = document.getElementById('contact-grid');
-  const addressBlock = document.getElementById('address-block');
-  const actionRow = document.getElementById('action-row');
-  const previewBadge = document.getElementById('preview-badge');
-  
-  if (isAuthenticated) {
-    contactGrid.classList.remove('hidden-preview');
-    addressBlock.classList.remove('hidden-preview');
-    actionRow.classList.remove('hidden-preview');
-    previewBadge.innerHTML = '';
-  } else {
-    contactGrid.classList.add('hidden-preview');
-    addressBlock.classList.add('hidden-preview');
-    actionRow.classList.add('hidden-preview');
-    previewBadge.innerHTML = '<div class="preview-badge">🔒 Limited Preview</div>';
-  }
-}
-
-// Add fade out animation
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-`;
-document.head.appendChild(style);
-
-// Initialize preview mode
-updateCardVisibility();
 
 // ── PARTICLE CANVAS ──
 (function(){
@@ -1458,24 +1382,7 @@ cardScene.addEventListener('touchend', e => {
   }
 });
 
-// ── KEYBOARD NAVIGATION ──
-document.addEventListener('keydown', e => {
-  if (e.code === 'Space' || e.code === 'Enter') {
-    const authOverlay = document.getElementById('auth-overlay');
-    if (!authOverlay.classList.contains('hidden')) {
-      e.preventDefault();
-      document.getElementById('auth-code').focus();
-    }
-  }
-});
 
-// Auto-focus auth input on load
-window.addEventListener('load', () => {
-  const authCode = document.getElementById('auth-code');
-  if (authCode && !isAuthenticated) {
-    authCode.focus();
-  }
-});
 </script>
 </body>
 </html>
